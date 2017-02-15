@@ -1,5 +1,6 @@
 package io.muic.ooc.webapp;
 
+import io.muic.ooc.webapp.service.MySQLService;
 import io.muic.ooc.webapp.service.SecurityService;
 import java.io.File;
 import javax.servlet.ServletException;
@@ -11,6 +12,8 @@ import org.apache.catalina.startup.Tomcat;
  * Created by gigadot on 02-Feb-17.
  */
 public class Webapp {
+    public static final String MYSQL_DRIVER = "com.mysql.jdbc.Driver";
+    public static final String MYSQL_URL = "jdbc:mysql://localhost:3306/test";
 
     public static void main(String[] args) {
 
@@ -19,8 +22,13 @@ public class Webapp {
         tomcat.setPort(8082);
         SecurityService securityService = new SecurityService();
 
+        MySQLService mySQLService = new MySQLService(MYSQL_DRIVER,MYSQL_URL);
+
         ServletRouter servletRouter = new ServletRouter();
         servletRouter.setSecurityService(securityService);
+        servletRouter.setMySQLService(mySQLService);
+
+
 
         Context ctx;
         try {
@@ -33,4 +41,6 @@ public class Webapp {
         }
 
     }
+
+
 }

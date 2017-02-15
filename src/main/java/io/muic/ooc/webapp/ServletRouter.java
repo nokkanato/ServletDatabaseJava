@@ -5,6 +5,7 @@
  */
 package io.muic.ooc.webapp;
 
+import io.muic.ooc.webapp.service.MySQLService;
 import io.muic.ooc.webapp.servlet.HomeServlet;
 import io.muic.ooc.webapp.service.SecurityService;
 import io.muic.ooc.webapp.servlet.LoginServlet;
@@ -18,9 +19,14 @@ import org.apache.catalina.startup.Tomcat;
 public class ServletRouter {
     
     private SecurityService securityService;
+    private MySQLService mySQLService;
 
     public void setSecurityService(SecurityService securityService) {
         this.securityService = securityService;
+    }
+
+    public void setMySQLService(MySQLService mySQLService) {
+        this.mySQLService = mySQLService;
     }
 
     public void init(Context ctx) {
@@ -37,7 +43,11 @@ public class ServletRouter {
 
     private void initLogin(Context ctx) {
         LoginServlet loginServlet = new LoginServlet();
+        loginServlet.setSecurityManager(securityService);
+        loginServlet.setMySQLManager(mySQLService);
         Tomcat.addServlet(ctx, "LoginServlet", loginServlet);
         ctx.addServletMapping("/login", "LoginServlet");
     }
+
+
 }

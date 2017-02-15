@@ -15,12 +15,18 @@ public class SecurityService {
     
     public boolean isAuthorized(HttpServletRequest request) {
         String username = (String) request.getSession().getAttribute("username");
+
+
+        return username != null;
         // do checking
-        return false;
+        // if username != null and contain in DB and user in session match username;
+        // request.getSession().getAttribute("username").equal(username)
+
+
+//        return false;
     }
-    
-    public boolean authenticate(HttpServletRequest request) {
-        return true;
-    }
+
+
+
     
 }
