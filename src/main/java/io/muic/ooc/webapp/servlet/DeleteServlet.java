@@ -1,27 +1,19 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package io.muic.ooc.webapp.servlet;
 
 import io.muic.ooc.webapp.service.MySQLService;
 import io.muic.ooc.webapp.service.SecurityService;
-import java.io.IOException;
+
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import static io.muic.ooc.webapp.Webapp.tracker;
+import java.io.IOException;
 
 /**
- *
- * @author gigadot
+ * Created by Apple on 2/16/2017 AD.
  */
-public class HomeServlet extends HttpServlet {
-
+public class DeleteServlet extends HttpServlet {
     private SecurityService securityService;
     private MySQLService mySQLService;
 
@@ -36,27 +28,17 @@ public class HomeServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        System.out.println(request.getParameter("userr"));
 
-
-        boolean authorized = securityService.isAuthorized(request);
-
-        if (authorized) {
-            RequestDispatcher rd = request.getRequestDispatcher("WEB-INF/home.jsp");
+        RequestDispatcher rd = request.getRequestDispatcher("WEB-INF/delete.jsp");
             rd.include(request, response);
-        } else {
-            response.sendRedirect("/login");
-
-        }
+            mySQLService.deleteDB(request.getParameter("userr"));
 
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-       request.getSession().invalidate();
-        RequestDispatcher rd = request.getRequestDispatcher("WEB-INF/login.jsp");
+        RequestDispatcher rd = request.getRequestDispatcher("WEB-INF/delete.jsp");
         rd.include(request, response);
-
-
-
     }
 }
